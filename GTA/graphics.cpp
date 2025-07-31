@@ -30,7 +30,6 @@ namespace UI
         float x = rect.x, y = rect.y, width = rect.width, height = rect.height;
         if (anchor != AnchorPoint::TopLeft) AdjustPositionForAnchor(x, y, width, height, anchor);
 
-        // Para GTA/FiveM: centro do ret‚ngulo em unidades relativas
         float relX = (x + width / 2.f) / SCREEN_WIDTH;
         float relY = (y + height / 2.f) / SCREEN_HEIGHT;
         float relWidth = width / SCREEN_WIDTH;
@@ -60,7 +59,7 @@ namespace UI
         }
     }
 
-    // FunÁ„o utilit·ria para calcular a largura do texto (opcional)
+    // Fun√ß√£o utilit√°ria para calcular a largura do texto (opcional)
     float GetTextWidth(const char* text, int font, float scaleX, float scaleY) {
         UI::SET_TEXT_FONT(font);
         UI::SET_TEXT_SCALE(scaleX, scaleY);
@@ -128,7 +127,7 @@ namespace UI
         float relWidth = width / SCREEN_WIDTH;
         float relHeight = height / SCREEN_HEIGHT;
 
-        // Solicita o dicion·rio de textura, se necess·rio
+        // Solicita o dicion√°rio de textura, se necess√°rio
         GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(streamedTexture.data(), false);
         if (GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(streamedTexture.data())) {
             GRAPHICS::DRAW_SPRITE(
