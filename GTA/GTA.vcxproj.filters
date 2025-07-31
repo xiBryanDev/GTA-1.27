@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="prx.cpp" />
+    <ClCompile Include="vector.cpp">
+      <Filter>ps3\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.cpp">
+      <Filter>ps3\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="detour.cpp">
+      <Filter>ps3\memory\detour</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>ImGUI\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>ImGUI\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="native.cpp">
+      <Filter>gta</Filter>
+    </ClCompile>
+    <ClCompile Include="pad.cpp">
+      <Filter>ps3\pad</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="vector.h">
+      <Filter>ps3\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>ps3\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="detour.h">
+      <Filter>ps3\memory\detour</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>ImGUI\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>ImGUI\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="native.h">
+      <Filter>gta</Filter>
+    </ClInclude>
+    <ClInclude Include="pad.h">
+      <Filter>ps3\pad</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ps3">
+      <UniqueIdentifier>{6b5ff381-0101-499e-8ec1-f7372c490660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ps3\vector">
+      <UniqueIdentifier>{b18c3bcd-2633-4225-a272-dae301bcce7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ps3\memory">
+      <UniqueIdentifier>{7add3ad5-b419-4ac2-a1f8-59b66301fb11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ps3\memory\detour">
+      <UniqueIdentifier>{23abaad3-140c-4e36-84d1-9f77680b2d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI">
+      <UniqueIdentifier>{89da2dcc-59a7-4994-976f-3da418474ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI\menu">
+      <UniqueIdentifier>{35518541-d6cd-42b9-8fa8-896e365a0d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI\graphics">
+      <UniqueIdentifier>{644c1a62-552a-4d4b-bbd5-7e6b0a3dda95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gta">
+      <UniqueIdentifier>{4bd38150-819b-4231-8b92-16cf2c1faa89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ps3\pad">
+      <UniqueIdentifier>{85f90c9a-0927-48e5-813f-5c3f023f865b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
