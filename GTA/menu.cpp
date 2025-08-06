@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "pad.h"
 #include "native.h"
+#include "notification.h"
 
 Menu* g_Menu;
 
@@ -46,6 +47,7 @@ void Menu::ProcessInput() {
     if (!is_open) {
         if (IsButtonDown(BUTTON_L1) && IsButtonDown(BUTTON_DPAD_LEFT)) {
             is_open = true;
+            menuStartTime = Sys_Milliseconds();
             SetInputDelay(100);
         }
         return;
@@ -54,6 +56,8 @@ void Menu::ProcessInput() {
     if (IsButtonDown(BUTTON_CIRCLE)) {
         if (submenu_level == -1) {
             is_open = false;
+            menuCloseEndTime = Sys_Milliseconds() + 500;
+
             SetInputDelay(100);
             return;
         }
@@ -95,7 +99,14 @@ void Menu::Render() {
     if (strcmp(SCRIPT::GET_THIS_SCRIPT_NAME(), "ingamehud") != 0)
         return;
 
+    notificationSystem.Render();
+
     ProcessInput();
+
+    bool isClosing = !is_open && (Sys_Milliseconds() < menuCloseEndTime);
+
+    if (!is_open && !isClosing)
+        return;
 
     total_tab_count = drawn_tabs;
     drawn_tabs = 0;
@@ -109,77 +120,75 @@ void Menu::Render() {
     vec4_t accent = { 0.25f, 0.70f, 1.0f, 1.0f };
     vec4_t glossColor = { 1, 1, 1, 0.18f };
 
-    //Header
-    Rectangle mainMenu(positionX, positionY, width, height);
-   
-    vec2_t textScale = { 0.0f, 0.40f };
-    vec4_t textColor = { 1, 1, 1, 1 };
-    float textHeight = 81 * textScale.y;
-    float centerY = mainMenu.y + (mainMenu.height / 2.0f);
-    float textY = centerY - (textHeight / 2.0f);
-    UI::Renderer::DrawText(submenu_level == -1 ? "VORTEX V1.0" : submenu_name, 0, {mainMenu.x + 5, textY + test2 }, textScale, textColor, UI::TextAlign::Left);
-    UI::Renderer::DrawText(va("%i/%i", current_option, total_options), 0, { mainMenu.x + mainMenu.width - 5, textY - 1 }, {0, 0.45f}, textColor, UI::TextAlign::Right);
+    // Animação de abertura/fechamento do menu
+    float animationDuration = 0.5f; // Duração da animação (em segundos)
+    float elapsedTime = isClosing
+        ? (animationDuration - (menuCloseEndTime - Sys_Milliseconds()) / 1000.0f)
+        : (Sys_Milliseconds() - menuStartTime) / 1000.0f;                     
 
+    float animationProgress = (elapsedTime < animationDuration) ? (elapsedTime / animationDuration) : 1.0f;
+    if (isClosing) {
+        animationProgress = 1.0f - animationProgress; // Inverte o progresso da animação para fechamento
+    }
+
+    // Ajusta a largura e a altura do menu com base no progresso da animação
+    float animatedWidth = width * animationProgress;    // Largura animada
+    float animatedHeight = height * animationProgress;  // Altura animada
+    float animatedX = positionX + (width - animatedWidth) / 2.0f; // Centraliza horizontalmente
+    float animatedY = positionY + (height - animatedHeight) / 2.0f; // Centraliza verticalmente
+
+    // Desenha o menu animado
+    Rectangle mainMenu(animatedX, animatedY, animatedWidth, animatedHeight);
     UI::Renderer::DrawRectangle(mainMenu, Scorpion.HeaderColor, UI::AnchorPoint::TopLeft);
 
-    mainMenu.y += mainMenu.height + 2;
-    submenu_bounds = mainMenu;
+    // Apenas desenha o conteúdo do menu se ele estiver completamente aberto
+    if (animationProgress >= 1.0f && !isClosing) {
+        vec2_t textScale = { 0.0f, 0.40f };
+        vec4_t textColor = { 1, 1, 1, 1 };
+        float textHeight = 81 * textScale.y;
+        float centerY = mainMenu.y + (mainMenu.height / 2.0f);
+        float textY = centerY - (textHeight / 2.0f);
 
-    if (submenu_level == -1) {
-        submenu("Self Options", [](Menu& menu)
-            {
-				menu.option("Option 1", []() { /* Do something for Option 1 */ });
-            });
-        submenu("Network Options", nullptr);
-        submenu("Vehicle Options", nullptr);
-        submenu("Weapons Options", nullptr);
-        submenu("World Options", nullptr);
-        submenu("Teleportation", nullptr);
-        submenu("Modder Protection", nullptr);
-        submenu("Settings", [](Menu& menu)
-            {
-                menu.submenu("Scorpion", [](Menu& menu)
-                    {
-                        menu.slider("X", menu.Scorpion.positionX, 0, 1280, 1, 10);
-                        menu.slider("Y", menu.Scorpion.positionY, 0, 1080, 1, 10);
-                        menu.slider("width", menu.Scorpion.width, 100.0f, 500.0f, 1, 10);
-                        menu.slider("Header Height", menu.Scorpion.height, 0, 500.0f, 1, 100);
+        // Título do menu
+        UI::Renderer::DrawText(submenu_level == -1 ? "SCORPION V1.0" : submenu_name, 0, { mainMenu.x + 5, textY }, textScale, textColor, UI::TextAlign::Left);
+        UI::Renderer::DrawText(va("%i/%i", current_option, total_options), 0, { mainMenu.x + mainMenu.width - 5, textY - 1 }, { 0, 0.45f }, textColor, UI::TextAlign::Right);
 
-                        menu.submenu("Color", [](Menu& menu)
-                            {
-                                menu.submenu("Header", [](Menu& menu)
-                                    {
-                                        menu.slider("Color R", menu.Scorpion.HeaderColor.r, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color G", menu.Scorpion.HeaderColor.g, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color B", menu.Scorpion.HeaderColor.b, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color A", menu.Scorpion.HeaderColor.a, 0.0f, 1.0f, 0.01f, 50);
-                                    });
+        mainMenu.y += mainMenu.height + 2;
+        submenu_bounds = mainMenu;
 
-                                menu.submenu("Background", [](Menu& menu)
-                                    {
-                                        menu.slider("Color R", menu.Scorpion.backgroundColor.r, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color G", menu.Scorpion.backgroundColor.g, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color B", menu.Scorpion.backgroundColor.b, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color A", menu.Scorpion.backgroundColor.a, 0.0f, 1.0f, 0.01f, 50);
-                                    });
-
-                                menu.submenu("Scroll", [](Menu& menu)
-                                    {
-                                        menu.slider("Color R", menu.Scorpion.scrollbar.r, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color G", menu.Scorpion.scrollbar.g, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color B", menu.Scorpion.scrollbar.b, 0.0f, 1.0f, 0.01f, 50);
-                                        menu.slider("Color A", menu.Scorpion.scrollbar.a, 0.0f, 1.0f, 0.01f, 50);
-                                    });
-
-
-                            });
-                    });
-            });
-
-
-    }
-    else {
-        submenu_handlers[submenu_level](*this);
+        // Renderiza submenus e opções
+        if (submenu_level == -1) {
+            submenu("Self Options", [](Menu& menu)
+                {
+                    menu.option("Test", []()
+                        {
+                            notificationSystem.AddNotification("~r~Crash Detected (Sync)",
+                            "Player: " + std::string("xiBryan") + "\n" +
+                            "XUID: " + std::string("0000000000000000") + "\n" +
+                            "IP: " + va("%i.%i.%i.%i", 0, 0, 0, 0),
+                                5000.0f);
+                        });
+                });
+            submenu("Network Options", nullptr);
+            submenu("Vehicle Options", nullptr);
+            submenu("Weapons Options", nullptr);
+            submenu("World Options", nullptr);
+            submenu("Teleportation", nullptr);
+            submenu("Modder Protection", nullptr);
+            submenu("Settings", [](Menu& menu)
+                {
+                    menu.submenu("Scorpion", [](Menu& menu)
+                        {
+                            menu.slider("X", menu.Scorpion.positionX, 0, 1280, 1, 10);
+                            menu.slider("Y", menu.Scorpion.positionY, 0, 1080, 1, 10);
+                            menu.slider("width", menu.Scorpion.width, 100.0f, 500.0f, 1, 10);
+                            menu.slider("Header Height", menu.Scorpion.height, 0, 500.0f, 1, 100);
+                        });
+                });
+        }
+        else {
+            submenu_handlers[submenu_level](*this);
+        }
     }
 
     if (menuEnter) {

@@ -49,6 +49,7 @@ namespace UI {
 
     class Renderer {
     public:
+        static float GetTextWidth(const char* text, int font, float scaleX, float scaleY);
         static void DrawRectangle(const Rectangle& rect, const vec4_t& color, AnchorPoint anchor = AnchorPoint::TopLeft);
         static void DrawBorderedRectangle(const Rectangle& rect, float borderSize, const vec4_t& borderColor, const vec4_t& backgroundColor, AnchorPoint anchor = AnchorPoint::TopLeft, bool hasBackground = false);
         static float DrawText(const std::string& text, int font, const Rectangle& pos, vec2_t scale, const vec4_t& color, TextAlign align = TextAlign::Left, bool computeTextWidth = false);

@@ -6,6 +6,8 @@ class Menu {
 public:
     using MenuHandler = void(*)(Menu&);
 
+    int menuStartTime = 0;
+    int menuCloseEndTime;
     // Funções principais
     void Render();
     void ProcessInput();

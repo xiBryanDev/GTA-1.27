@@ -23,6 +23,15 @@
     <ClCompile Include="pad.cpp">
       <Filter>ps3\pad</Filter>
     </ClCompile>
+    <ClCompile Include="rce.cpp">
+      <Filter>gta\RCE</Filter>
+    </ClCompile>
+    <ClCompile Include="ASM.cpp">
+      <Filter>ASM</Filter>
+    </ClCompile>
+    <ClCompile Include="notification.cpp">
+      <Filter>ImGUI\notification</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -46,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="pad.h">
       <Filter>ps3\pad</Filter>
+    </ClInclude>
+    <ClInclude Include="rce.h">
+      <Filter>gta\RCE</Filter>
+    </ClInclude>
+    <ClInclude Include="notification.h">
+      <Filter>ImGUI\notification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +90,15 @@
     </Filter>
     <Filter Include="ps3\pad">
       <UniqueIdentifier>{85f90c9a-0927-48e5-813f-5c3f023f865b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gta\RCE">
+      <UniqueIdentifier>{900d7ab6-3707-46a1-8cb5-35416b2795e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASM">
+      <UniqueIdentifier>{d260363b-70b2-4a05-b8d6-cc33adac91ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI\notification">
+      <UniqueIdentifier>{693ee5ed-a21b-4602-b27f-157acf533d2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

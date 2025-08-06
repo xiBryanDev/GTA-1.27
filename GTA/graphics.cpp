@@ -59,11 +59,10 @@ namespace UI
         }
     }
 
-    // Função utilitária para calcular a largura do texto (opcional)
-    float GetTextWidth(const char* text, int font, float scaleX, float scaleY) {
+    float Renderer::GetTextWidth(const char* text, int font, float scaleX, float scaleY) {
         UI::SET_TEXT_FONT(font);
         UI::SET_TEXT_SCALE(scaleX, scaleY);
-        UI::_SET_TEXT_ENTRY("STRING");
+        UI::_0x51E7A037("STRING");
         UI::_ADD_TEXT_COMPONENT_STRING(text);
         return UI::_END_TEXT_COMMAND_GET_WIDTH(true);
     }
@@ -127,7 +126,7 @@ namespace UI
         float relWidth = width / SCREEN_WIDTH;
         float relHeight = height / SCREEN_HEIGHT;
 
-        // Solicita o dicionário de textura, se necessário
+        // Solicita o dicion�rio de textura, se necess�rio
         GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(streamedTexture.data(), false);
         if (GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(streamedTexture.data())) {
             GRAPHICS::DRAW_SPRITE(

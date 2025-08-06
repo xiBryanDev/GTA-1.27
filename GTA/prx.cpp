@@ -4,7 +4,7 @@
 #include "graphics.h"
 #include "pad.h"
 #include "menu.h"
-
+#include "notification.h"
 
 #pragma diag_suppress 77
 
@@ -13,10 +13,18 @@ SYS_MODULE_START(module_start);
 SYS_MODULE_STOP(module_stop);
 
 
+
+
+
+
+
+
+
 DetourPPC* IS_PLAYER_ONLINE_t;
 bool IS_PLAYER_ONLINE()
 {
 	g_Menu->Render();
+	
 	return true;
 }
 

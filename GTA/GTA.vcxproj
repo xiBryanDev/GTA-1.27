@@ -65,13 +65,16 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ASM.cpp" />
     <ClCompile Include="detour.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="native.cpp" />
     <ClCompile Include="memory.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="notification.cpp" />
     <ClCompile Include="pad.cpp" />
     <ClCompile Include="prx.cpp" />
+    <ClCompile Include="rce.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +83,9 @@
     <ClInclude Include="native.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="notification.h" />
     <ClInclude Include="pad.h" />
+    <ClInclude Include="rce.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>

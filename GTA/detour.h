@@ -24,22 +24,18 @@ public:
 
         if (!jumpOnly) {
             stubAddr_ = allocateStub();
-            // Copia instruções originais para o stub
             Memory::Write(stubAddr_, originalCode_, sizeof(originalCode_));
 
-            // Cria salto de continuação no stub
             uint32_t continueAddr = targetAddr_ + sizeof(originalCode_);
             uint32_t stubJump[4];
             makeJump(stubJump, continueAddr, reg_, false);
             Memory::Write(stubAddr_ + sizeof(originalCode_), stubJump, sizeof(stubJump));
 
-            // Prepara OPD do stub para uso com TOC
             functionOpd_[0] = stubAddr_;
             uint32_t* tocEntry = *reinterpret_cast<uint32_t**>(0x1001C);
             functionOpd_[1] = tocEntry[1];
         }
 
-        // Hook: sobrescreve código original com salto para hook
         uint32_t hookJump[4];
         makeJump(hookJump, hookAddr_, reg_, linked);
         Memory::Write(targetAddr_, hookJump, sizeof(hookJump));
@@ -50,7 +46,6 @@ public:
     template<typename Ret, typename... Args>
     Ret CallOriginal(Args... args) {
         if (!functionOpd_[0]) return Ret();
-        // OPD: [function pointer, toc pointer]
         auto fn = reinterpret_cast<Ret(*)(Args...)>(functionOpd_);
         return fn(args...);
     }
